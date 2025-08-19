@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import type React from "react"
-import Link from "next/link"
-import { Menu, User, LogOut, PenSquare } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import type React from "react";
+import Link from "next/link";
+import { Menu, User, LogOut, PenSquare } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,16 +12,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function SiteHeader() {
-  const isAuthenticated = false
-  const user = null
+  const isAuthenticated =
+    typeof window !== "undefined" && !!localStorage.getItem("authState");
 
   const handleLogout = () => {
-    console.log("Logout clicked")
-  }
+    console.log("Logout clicked");
+    localStorage.removeItem("authState");
+    window.location.reload();
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -29,24 +31,40 @@ export function SiteHeader() {
         <div className="flex items-center gap-2 md:gap-4">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden hover:bg-accent/10">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden hover:bg-accent/10"
+              >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Mở menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-80">
               <nav className="grid gap-6 text-lg font-medium mt-6">
-                <Link href="/" className="flex items-center gap-3 text-xl font-bold text-primary">
+                <Link
+                  href="/"
+                  className="flex items-center gap-3 text-xl font-bold text-primary"
+                >
                   <BookIcon className="h-6 w-6" />
                   <span>ATBlog</span>
                 </Link>
-                <Link href="/blogs" className="text-foreground hover:text-primary transition-colors">
+                <Link
+                  href="/blogs"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
                   Khám Phá
                 </Link>
-                <Link href="/blogs/new" className="text-foreground hover:text-primary transition-colors">
+                <Link
+                  href="/blogs/new"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
                   Viết Bài
                 </Link>
-                <Link href="/profile" className="text-foreground hover:text-primary transition-colors">
+                <Link
+                  href="/profile"
+                  className="text-foreground hover:text-primary transition-colors"
+                >
                   Hồ Sơ
                 </Link>
               </nav>
@@ -80,15 +98,23 @@ export function SiteHeader() {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-accent/10">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full hover:bg-accent/10"
+                >
                   <Avatar className="h-9 w-9">
                     <AvatarImage src="/placeholder.svg" alt="User avatar" />
-                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold">AT</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                      AT
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className="font-semibold">Tài Khoản Của Tôi</DropdownMenuLabel>
+                <DropdownMenuLabel className="font-semibold">
+                  Tài Khoản Của Tôi
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile" className="cursor-pointer">
@@ -115,7 +141,10 @@ export function SiteHeader() {
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button variant="ghost" className="hover:bg-accent/10 font-medium">
+                <Button
+                  variant="ghost"
+                  className="hover:bg-accent/10 font-medium"
+                >
                   Đăng Nhập
                 </Button>
               </Link>
@@ -129,7 +158,7 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
-  )
+  );
 }
 
 // Custom icons
@@ -149,5 +178,5 @@ function BookIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
     </svg>
-  )
+  );
 }
