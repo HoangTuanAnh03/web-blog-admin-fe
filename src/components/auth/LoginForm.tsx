@@ -20,7 +20,6 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // optional realtime validation (nhẹ)
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
 
@@ -46,7 +45,8 @@ export function LoginForm() {
       if (success) {
         toast({ title: "Đăng nhập thành công", description: "Chào mừng bạn quay trở lại!", duration: 1500 });
         // await apiService.reloadAccessToken?.();
-        router.push("/");
+        router.push("/admin");
+        router.refresh();    
       } else {
         toast({ title: "Đăng nhập thất bại", description: "Email hoặc mật khẩu không chính xác", variant: "destructive", duration: 1500 });
       }

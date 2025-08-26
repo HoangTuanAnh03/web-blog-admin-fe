@@ -14,15 +14,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useRouter } from "next/navigation"
 
 export function SiteHeader() {
   const isAuthenticated =
     typeof window !== "undefined" && !!localStorage.getItem("authState");
-
+  const router = useRouter();
   const handleLogout = () => {
-    console.log("Logout clicked");
-    localStorage.removeItem("authState");
-    window.location.reload();
+    try {
+      localStorage.removeItem("authState");
+      sessionStorage.clear();
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout error:", error);
+      window.location.reload();
+    }
   };
 
   return (
@@ -49,7 +55,7 @@ export function SiteHeader() {
                   <BookIcon className="h-6 w-6" />
                   <span>ATBlog</span>
                 </Link>
-                <Link
+                {/* <Link
                   href="/blogs"
                   className="text-foreground hover:text-primary transition-colors"
                 >
@@ -60,7 +66,7 @@ export function SiteHeader() {
                   className="text-foreground hover:text-primary transition-colors"
                 >
                   Viết Bài
-                </Link>
+                </Link> */}
                 <Link
                   href="/profile"
                   className="text-foreground hover:text-primary transition-colors"
@@ -78,7 +84,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium ml-8">
+          {/* <nav className="hidden md:flex items-center gap-8 text-sm font-medium ml-8">
             <Link
               href="/blogs"
               className="text-foreground hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 hover:after:w-full"
@@ -91,7 +97,7 @@ export function SiteHeader() {
             >
               Viết Bài
             </Link>
-          </nav>
+          </nav> */}
         </div>
 
         <div className="flex items-center gap-3">
@@ -123,10 +129,10 @@ export function SiteHeader() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/blogs/new" className="cursor-pointer">
+                  {/* <Link href="/blogs/new" className="cursor-pointer">
                     <PenSquare className="mr-3 h-4 w-4" />
                     Viết Bài
-                  </Link>
+                  </Link> */}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

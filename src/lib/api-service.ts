@@ -138,7 +138,7 @@ class ApiService {
       }
     }
 
-    return this.fetchApi<PageResponse<PostSummaryResponse>>(url);
+    return this.fetchApi<ApiResponse<PageResponse<PostSummaryResponse>>>(url);
   }
 
   async getTopics() {

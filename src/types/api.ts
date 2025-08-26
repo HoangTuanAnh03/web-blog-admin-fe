@@ -128,3 +128,73 @@ export interface UserUpdateRequest{
   avatar?: string;
   gender: Gender;
 }
+export interface DashboardResponse {
+    bar_chart: {month: number; year: number; count: number}[];
+    pie_chart: {sensitive_post: number; total_post: number};
+    table: {cname: string; post_count: number}[];
+}
+
+
+export interface BlogPost {
+    id: string;
+    title: string;
+    cover: string | null;
+    excerpt: string;
+    userResponse: UserResponse;
+    viewsCount: number;
+    commentsCount: number;
+    hasSensitiveContent: boolean;
+    category: any[];
+    createdAt: string;
+    content: string;
+}
+
+interface Sort {
+    empty: boolean;
+    unsorted: boolean;
+    sorted: boolean;
+}
+
+interface Pageable {
+    pageNumber: number;
+    pageSize: number;
+    sort: Sort;
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+}
+export interface Page<T> {
+    pageable: Pageable;
+    last: boolean;
+    totalElements: number;
+    totalPages: number;
+    size: number;
+    number: number;
+    sort: Sort;
+    numberOfElements: number;
+    first: boolean;
+    empty: boolean;
+    content?: T[]; 
+}
+
+export interface Meta {
+    page: number;
+    pageSize: number;
+    pages: number;
+    total: number;
+}
+
+export interface User {
+    id: string;
+    email: string;
+    name: string;
+    gender: Gender;
+    dob: string;
+    avatar: string | null;
+    no_password: boolean;
+    is_locked: boolean;
+}
+export interface UserListResponse {
+    meta: Meta;
+    result: User[];
+}
