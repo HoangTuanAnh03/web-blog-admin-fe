@@ -4,22 +4,23 @@ import {ApiResponse, BlogPost, CategoryResponse, DashboardResponse, Page, UserLi
 
 const API = "https://api.sportbooking.site"
 
-// 🔥 THAY ĐỔI: Loại bỏ size vì backend mặc định là 12
 interface PostFilters {
   page?: number
-  search?: string  // Chỉ có page và search
+  search?: string 
 }
 
-// 🔥 THAY ĐỔI: Simplified getPost function
+interface UserFilters {
+  page?: number
+  search?: string
+}
+
 async function getPost(filters: PostFilters = {}): Promise<ApiResponse<PageResponse<BlogPost>>> {
     const { page = 0, search } = filters;
 
-    // Build query parameters - chỉ page và search
     const params = new URLSearchParams({
         page: page.toString(),
     });
 
-    // Add search parameter if provided
     if (search && search.trim()) {
         params.append('search', search.trim());
     }
@@ -38,7 +39,6 @@ async function getPost(filters: PostFilters = {}): Promise<ApiResponse<PageRespo
     return res.json()
 }
 
-// Các functions khác giữ nguyên...
 async function fetchDashboard(): Promise<ApiResponse<DashboardResponse>> {
     const res = await fetch(`${API}/blog/admin/dashboard`, {
         headers: {
@@ -69,19 +69,26 @@ async function getCategories(): Promise<ApiResponse<CategoryResponse[]>> {
     return res.json()
 }
 
-async function getUsers(): Promise<ApiResponse<UserListResponse>> {
-    const res = await fetch(`${API}/users/`, {
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("authState") as string)?.accessToken}`,
-        },
-    })
+async function getUsers(filters: UserFilters = {}): Promise<ApiResponse<UserListResponse>> {
+  const { page = 0, search } = filters
+  const params = new URLSearchParams({ page: page.toString() })
 
-    if (!res.ok) {
-        throw new Error('Failed to fetch users')
-    }
+  if (search && search.trim()) {
+    params.append('search', search.trim())
+  }
 
-    return res.json()
+  const res = await fetch(`${API}/users/getAllUser?${params}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("authState") as string)?.accessToken}`,
+    },
+  })
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch users: ${res.status} ${res.statusText}`)
+  }
+
+  return res.json()
 }
 
 export async function deletePost(pid: string): Promise<boolean> {
@@ -107,7 +114,6 @@ export async function lockUser(uid: string, isLock: boolean): Promise<boolean> {
     return res.ok;
 }
 
-// React Query hooks
 export function useDashboardQuery() {
     return useQuery({
         queryKey: ['adminDashboard'],
@@ -134,12 +140,14 @@ export function usePostQuery(filters: PostFilters = {}) {
     })
 }
 
-export function useUserQuery() {
-    return useQuery({
-        queryKey: ['adminUser'],
-        queryFn: getUsers,
-        retry: false
-    })
+export function useUserQuery(filters: UserFilters = {}) {
+  return useQuery({
+    queryKey: ['adminUser', filters],
+    queryFn: () => getUsers(filters),
+    retry: false,
+    placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 5,
+  })
 }
 
 export type { PostFilters };

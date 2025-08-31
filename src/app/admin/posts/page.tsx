@@ -22,6 +22,7 @@ import { PostsTable } from "@/components/posts/posts-table"
 import { PostsGrid } from "@/components/posts/posts-grid"
 import { DeletePostDialog } from "@/components/posts/delete-post-dialog"
 import { PostDetailModal } from "@/components/posts/post-detail-modal"
+import { PostsHeader } from "@/components/posts/posts-header"
 
 export default function PostsPage() {
   // Search states
@@ -55,6 +56,10 @@ export default function PostsPage() {
       hasContent: data.data.content.length > 0
     } : null
   }, [data])
+
+  const postsCount = paginationInfo?.totalElements ?? 0;  
+  const filteredCount = paginationInfo?.hasContent ? data?.data?.content?.length ?? 0 : 0;   
+
 
   // Event Handlers
   const handleSearchClick = useCallback(() => {
@@ -186,14 +191,10 @@ export default function PostsPage() {
       <div className="container mx-auto px-6 py-8 max-w-7xl">
         <div className="space-y-8">
           {/* Header Section */}
-          <div className=" space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Quản Lý Bài Viết
-            </h1>
-            <p className="text-muted-foreground max-w-2xl">
-              Quản lý và theo dõi tất cả bài viết trong hệ thống admin
-            </p>
-          </div>
+          <PostsHeader 
+            postsCount={postsCount} 
+            filteredCount={filteredCount} 
+          />
 
           {/* Search & Filter Section */}
           <Card className="shadow-sm border-0 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">

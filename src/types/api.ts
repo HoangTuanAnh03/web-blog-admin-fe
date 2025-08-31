@@ -195,6 +195,30 @@ export interface User {
     is_locked: boolean;
 }
 export interface UserListResponse {
-    meta: Meta;
-    result: User[];
+  content: User[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  size: number;
+  number: number;
+  numberOfElements: number;
+  empty: boolean;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
 }

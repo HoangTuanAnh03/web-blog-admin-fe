@@ -49,11 +49,11 @@ export function SiteHeader() {
             <SheetContent side="left" className="w-80">
               <nav className="grid gap-6 text-lg font-medium mt-6">
                 <Link
-                  href="/"
+                  href="/admin"
                   className="flex items-center gap-3 text-xl font-bold text-primary"
                 >
                   <BookIcon className="h-6 w-6" />
-                  <span>ATBlog</span>
+                  <span>Blog</span>
                 </Link>
                 {/* <Link
                   href="/blogs"
@@ -77,10 +77,10 @@ export function SiteHeader() {
             </SheetContent>
           </Sheet>
 
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/admin" className="flex items-center gap-3 group">
             <BookIcon className="h-7 w-7 text-primary group-hover:text-accent transition-colors duration-200" />
             <span className="font-black text-xl text-foreground group-hover:text-primary transition-colors duration-200">
-              ATBlog
+              Blog
             </span>
           </Link>
 
@@ -103,7 +103,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              {/* <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -116,7 +116,7 @@ export function SiteHeader() {
                     </AvatarFallback>
                   </Avatar>
                 </Button>
-              </DropdownMenuTrigger>
+              </DropdownMenuTrigger> */}
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="font-semibold">
                   Tài Khoản Của Tôi

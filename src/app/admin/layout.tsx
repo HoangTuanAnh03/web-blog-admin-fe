@@ -43,7 +43,7 @@ export default function AdminLayout({
                   )}
               >
                 <Home className="h-4 w-4"/>
-                Dashboard
+                Trang chủ
               </Link>
               <Link
                   href="/admin/users"
@@ -53,7 +53,7 @@ export default function AdminLayout({
                   )}
               >
                 <Users className="h-4 w-4"/>
-                Users
+                Tài khoản
               </Link>
               <Link
                   href="/admin/posts"
@@ -63,7 +63,7 @@ export default function AdminLayout({
                   )}
               >
                 <BarChart3 className="h-4 w-4"/>
-                Posts
+                Bài viết
               </Link>
               <Link
                   href="/admin/categories"
@@ -73,13 +73,13 @@ export default function AdminLayout({
                   )}
               >
                 <PieChart className="h-4 w-4"/>
-                Categories
+                Danh mục
               </Link>
             </nav>
             <div className="mt-auto p-4">
               <Button variant="outline" className="w-full justify-start gap-2" onClick={handleLogout}>
                 <LogOut className="h-4 w-4"/>
-                Log out
+                Đăng xuất
               </Button>
             </div>
           </aside>
