@@ -93,6 +93,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       const data = await response.json();
       if (data.code === 200) {
+        if (data.data.user.role != "ROLE_ADMIN") {
+          return false;
+        }
+
         const newAuthState = {
           user: data.data.user,
           accessToken: data.data.access_token,
