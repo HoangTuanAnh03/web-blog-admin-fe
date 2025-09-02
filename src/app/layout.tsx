@@ -11,7 +11,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Blog Platform",
   description: "A modern blog platform for sharing your ideas with the world",
-  generator: "iamtdf",
 };
 
 export default function RootLayout({
