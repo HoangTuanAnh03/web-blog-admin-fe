@@ -17,7 +17,7 @@ export function CategoriesHeader({ categoriesCount, onAddClick, isAdding }: Cate
             Quản lý danh mục
           </h1>
           <p className="text-lg text-muted-foreground">
-            Quản lý các danh mục được sử dụng để phân loại bài viết
+            Quản lý các danh mục bài viết được sử dụng
           </p>
         </div>
         

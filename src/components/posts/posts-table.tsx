@@ -28,6 +28,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "@/types/api";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { User as UserIcon } from "lucide-react"
 interface PostsTableProps {
   posts: BlogPost[];
   totalCount: number;
@@ -57,12 +59,9 @@ export function PostsTable({
     );
   };
 
-  // 🔥 MỚI: Function để render multiple categories
   const renderCategories = (categories: string | string[]) => {
-    // Handle both string and array format
     const categoryList = Array.isArray(categories) ? categories : [categories];
 
-    // Filter out empty/invalid categories
     const validCategories = categoryList.filter(
       (cat) => cat && typeof cat === "string" && cat.trim() !== ""
     );
@@ -95,7 +94,6 @@ export function PostsTable({
       );
     }
 
-    // If more than 2 categories, show first one + count
     return (
       <div className="flex flex-col gap-1">
         <Badge variant="outline" className="text-xs">
@@ -157,7 +155,6 @@ export function PostsTable({
                     key={post.id}
                     className="hover:bg-muted/30 transition-colors"
                   >
-                    {/* Tiêu đề */}
                     <TableCell className="py-4 w-[35%]">
                       <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
@@ -186,11 +183,17 @@ export function PostsTable({
 
                     <TableCell className="py-4 w-[12%] text-center">
                       <div className="flex flex-col items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                          <User className="h-4 w-4 text-muted-foreground" />
-                        </div>
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage
+                            src={post.userResponse?.avatar ?? ""}
+                            alt={post.userResponse?.name}
+                          />
+                          <AvatarFallback className="bg-muted flex items-center justify-center">
+                            <UserIcon className="h-4 w-4 text-muted-foreground" />
+                          </AvatarFallback>
+                        </Avatar>
                         <span className="font-medium text-sm text-center line-clamp-1">
-                          {post.userResponse.name}
+                          {post.userResponse?.name}
                         </span>
                       </div>
                     </TableCell>
@@ -259,7 +262,6 @@ export function PostsTable({
                 <TableRow>
                   <TableCell colSpan={6} className="h-32 text-center">
                     {" "}
-                    {/* 🔥 Thay đổi colSpan từ 7 thành 6 */}
                     <div className="flex flex-col items-center gap-3 text-muted-foreground">
                       <Filter className="h-12 w-12 opacity-50" />
                       <div className="text-center">

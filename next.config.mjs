@@ -1,12 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
+  images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'i.nuuls.com',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "i.nuuls.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cmsassets.rgpub.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "am-a.akamaihd.net",
+        pathname: "/**",
       },
     ],
   },
