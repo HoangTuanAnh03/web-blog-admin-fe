@@ -212,7 +212,7 @@ export default function AdminDashboard() {
                     </TableCell>
                     <TableCell>{item.cdesc}</TableCell>
                     <TableCell className="text-right">
-                      {item.post_count}
+                      {item.postCount}
                     </TableCell>
                   </TableRow>
                 ))}

@@ -40,7 +40,7 @@ export function UsersHeader({
             Quản lý Tài khoản
           </h1>
 
-          <div className="flex flex-wrap items-center gap-2 text-sm">
+          {/* <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="text-muted-foreground">Tổng số</span>
             <Badge variant="secondary" className="px-2 py-0.5">
               {fmt.format(total)} người dùng
@@ -52,8 +52,10 @@ export function UsersHeader({
             <Badge className="px-2 py-0.5">
               {fmt.format(visible)} / {fmt.format(total)}
             </Badge>
-          </div>
-
+          </div> */}
+          <p className="text-lg text-muted-foreground">
+            Quản lý thông tin và trạng thái tài khoản người dùng
+          </p>
           {lastUpdatedAt && (
             <p className="text-xs text-muted-foreground mt-2">
               Cập nhật lần cuối:{" "}

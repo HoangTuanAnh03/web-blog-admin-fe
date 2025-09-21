@@ -54,7 +54,7 @@ export function UsersTable({
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl">Danh sách người dùng</CardTitle>
+            <CardTitle className="text-xl">Danh sách tài khoản</CardTitle>
             <CardDescription className="mt-1">
               {filteredUsers.length} trong tổng số {totalCount} người dùng
               {searchTerm ? ` (lọc theo: "${searchTerm}")` : ""}
