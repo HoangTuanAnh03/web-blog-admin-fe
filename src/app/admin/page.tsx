@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Card,
@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   BarChart,
   Bar,
@@ -19,7 +19,7 @@ import {
   Pie,
   Cell,
   Legend,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import {
   Table,
   TableBody,
@@ -27,45 +27,48 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { useEffect, useState } from "react"
-import { useDashboardQuery } from "@/hooks/useAdminQuery"
-import { DashboardResponse } from "@/types/api"
+} from "@/components/ui/table";
+import { useEffect, useState } from "react";
+import { useDashboardQuery } from "@/hooks/useAdminQuery";
+import { DashboardResponse } from "@/types/api";
+import { Label } from "recharts";
 
-const COLORS = ["#0088FE", "#FF8042"]
+const COLORS = ["#0088FE", "#FF8042"];
 
 type BarChartItem = {
-  label: string
-  month: number
-  year: number
-  count: number
-}
+  label: string;
+  month: number;
+  year: number;
+  count: number;
+};
 
 export default function AdminDashboard() {
-  const [data, setData] = useState<DashboardResponse>()
-  const { data: dashboard, isLoading, error } = useDashboardQuery()
-  const [barChartFormatter, setBarChartFormatter] = useState<BarChartItem[]>([])
+  const [data, setData] = useState<DashboardResponse>();
+  const { data: dashboard, isLoading, error } = useDashboardQuery();
+  const [barChartFormatter, setBarChartFormatter] = useState<BarChartItem[]>(
+    []
+  );
 
   useEffect(() => {
     if (dashboard) {
-      setData(dashboard.data)
+      setData(dashboard.data);
       const temp = dashboard.data.bar_chart.map((item) => ({
         ...item,
         label: `${item.month}/${item.year}`,
-      }))
-      setBarChartFormatter(temp)
+      }));
+      setBarChartFormatter(temp);
     }
-  }, [dashboard])
+  }, [dashboard]);
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
         Đang tải dữ liệu...
       </div>
-    )
+    );
   }
   if (error || !data) {
-    return <div>Lỗi khi tải dữ liệu Dashboard</div>
+    return <div>Lỗi khi tải dữ liệu Dashboard</div>;
   }
 
   const pieData = [
@@ -74,7 +77,7 @@ export default function AdminDashboard() {
       name: "Bài viết bình thường",
       value: data.pie_chart.total_post - data.pie_chart.sensitive_post,
     },
-  ]
+  ];
 
   return (
     <div className="flex-1 space-y-6 p-8 pt-6">
@@ -158,19 +161,22 @@ export default function AdminDashboard() {
               So sánh bài viết nhạy cảm và bình thường
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+
+          <CardContent className="pt-2">
+            <ResponsiveContainer width="100%" height={320}>
               <PieChartComponent>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  labelLine={false}
-                  outerRadius={80}
+                  innerRadius={70}
+                  outerRadius={110}
+                  paddingAngle={2}
+                  cornerRadius={6}
                   dataKey="value"
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
+                  labelLine={false}
+                  stroke="hsl(var(--background))"
+                  strokeOpacity={0.6}
                 >
                   {pieData.map((entry, index) => (
                     <Cell
@@ -178,8 +184,81 @@ export default function AdminDashboard() {
                       fill={COLORS[index % COLORS.length]}
                     />
                   ))}
+
+                  <Label
+                    position="center"
+                    content={({ viewBox }) => {
+                      if (!viewBox || !("cx" in viewBox) || !("cy" in viewBox))
+                        return null;
+                      const typedViewBox = viewBox as {
+                        cx: number;
+                        cy: number;
+                      };
+                      if (
+                        typeof typedViewBox.cx !== "number" ||
+                        typeof typedViewBox.cy !== "number"
+                      )
+                        return null;
+
+                      const total = pieData.reduce(
+                        (s, d) => s + (Number(d?.value) || 0),
+                        0
+                      );
+                      const { cx, cy } = typedViewBox;
+                      return (
+                        <>
+                          <text
+                            x={cx}
+                            y={cy - 6}
+                            textAnchor="middle"
+                            className="fill-foreground"
+                            fontSize={12}
+                          >
+                            Tổng
+                          </text>
+                          <text
+                            x={cx}
+                            y={cy + 14}
+                            textAnchor="middle"
+                            className="fill-foreground"
+                            fontWeight={700}
+                            fontSize={18}
+                          >
+                            {new Intl.NumberFormat("vi-VN").format(total)}
+                          </text>
+                        </>
+                      );
+                    }}
+                  />
                 </Pie>
-                <Legend />
+
+                <Tooltip
+                  cursor={{ opacity: 0.08 }}
+                  formatter={(value: any, name: any) => {
+                    const total = pieData.reduce(
+                      (s, d) => s + (Number(d?.value) || 0),
+                      0
+                    );
+                    const v = Number(value) || 0;
+                    const pct = total ? Math.round((v / total) * 100) : 0;
+                    return [
+                      `${new Intl.NumberFormat("vi-VN").format(v)} (${pct}%)`,
+                      name,
+                    ];
+                  }}
+                  contentStyle={{
+                    borderRadius: 12,
+                    border: "1px solid hsl(var(--border))",
+                  }}
+                  labelStyle={{ color: "hsl(var(--muted-foreground))" }}
+                />
+
+                <Legend
+                  verticalAlign="bottom"
+                  align="center"
+                  iconType="circle"
+                  wrapperStyle={{ paddingTop: 8 }}
+                />
               </PieChartComponent>
             </ResponsiveContainer>
           </CardContent>
@@ -207,9 +286,7 @@ export default function AdminDashboard() {
               <TableBody>
                 {data.table.map((item: any, index: number) => (
                   <TableRow key={index}>
-                    <TableCell className="font-medium">
-                      {item.cname}
-                    </TableCell>
+                    <TableCell className="font-medium">{item.cname}</TableCell>
                     <TableCell>{item.cdesc}</TableCell>
                     <TableCell className="text-right">
                       {item.postCount}
@@ -222,5 +299,5 @@ export default function AdminDashboard() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
